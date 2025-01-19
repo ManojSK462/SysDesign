@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Service
 public class DistributedCache {
     private final ConsistentHash<CacheServer> consistentHash;
-    private final Map<String, CacheServer> servers = new ConcurrentHashMap<>();
+    final Map<String, CacheServer> servers = new ConcurrentHashMap<>();
 
     public DistributedCache(List<CacheServer> initialServers) {
         consistentHash = new ConsistentHash<>(100); // Using 100 as default number of replicas
