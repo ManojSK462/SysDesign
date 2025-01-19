@@ -5,7 +5,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 public class ConsistentHash<T> {
-    private final SortedMap<Long, T> circle = new TreeMap<>();
+    private final SortedMap<Long, T> ring = new TreeMap<>();
     private final int defaultReplicas;
     private final Map<T, Integer> nodeWeights = new HashMap<>();
 
@@ -33,7 +33,7 @@ public class ConsistentHash<T> {
         nodeWeights.put(node, weight);
         int replicas = weight * defaultReplicas;
         for (int i = 0; i < replicas; i++) {
-            circle.put(hash(node.toString() + i), node);
+            ring.put(hash(node.toString() + i), node);
         }
     }
 
@@ -41,21 +41,21 @@ public class ConsistentHash<T> {
         int weight = nodeWeights.getOrDefault(node, 1);
         int replicas = weight * defaultReplicas;
         for (int i = 0; i < replicas; i++) {
-            circle.remove(hash(node.toString() + i));
+            ring.remove(hash(node.toString() + i));
         }
         nodeWeights.remove(node);
     }
 
     public T get(Object key) {
-        if (circle.isEmpty()) {
+        if (ring.isEmpty()) {
             return null;
         }
         long hash = hash(key.toString());
-        if (!circle.containsKey(hash)) {
-            SortedMap<Long, T> tailMap = circle.tailMap(hash);
-            hash = tailMap.isEmpty() ? circle.firstKey() : tailMap.firstKey();
+        if (!ring.containsKey(hash)) {
+            SortedMap<Long, T> tailMap = ring.tailMap(hash);
+            hash = tailMap.isEmpty() ? ring.firstKey() : tailMap.firstKey();
         }
-        return circle.get(hash);
+        return ring.get(hash);
     }
 
     public void updateWeight(T node, int newWeight) {
