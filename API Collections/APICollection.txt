@@ -1,0 +1,13 @@
+Rate Limiter:
+1.Check Available Tokens
+2.Hit Request
+
+Consistent Hashing:
+1.Set Value to Cache
+2.Get Value From Cache by Key
+3.Delete Value from Cache by Key
+4.Get Server by Cache Key
+5.Get All servers
+6.Add Server
+7.Remove Server
+8.Update Server Weight
