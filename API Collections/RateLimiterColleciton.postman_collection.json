@@ -1,0 +1,38 @@
+{
+	"info": {
+		"_postman_id": "ed600ede-b72a-43b0-8827-0963ad3c6893",
+		"name": "RateLimiterColleciton",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "41248350"
+	},
+	"item": [
+		{
+			"name": "CheckAvailableTokens",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/tokens",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"tokens"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "HitRequest",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}

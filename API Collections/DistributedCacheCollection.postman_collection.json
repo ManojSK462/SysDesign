@@ -1,0 +1,139 @@
+{
+	"info": {
+		"_postman_id": "82d40fd3-6c71-4579-b6a9-edaad5ae373e",
+		"name": "DistributedCacheCollection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "41248350"
+	},
+	"item": [
+		{
+			"name": "SetValuetoCache",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\"Hello, Distributed Cache!\"",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/cache/mykey",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"cache",
+						"mykey"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetValueFromCache",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/cache/mykey",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"cache",
+						"mykey"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeletefromCache",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "GetServerbyKey",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllServers",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/cache/servers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"cache",
+						"servers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AddServer",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateServerWeight",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/cache/server/{serverId}/weight?weight={newWeight}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"cache",
+						"server",
+						"{serverId}",
+						"weight"
+					],
+					"query": [
+						{
+							"key": "weight",
+							"value": "{newWeight}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteServer",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}
