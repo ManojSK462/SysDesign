@@ -5,6 +5,7 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/rateLimiter/pom.xml" />
+        <option value="$PROJECT_DIR$/ConsistentHashing/pom.xml" />
       </list>
     </option>
   </component>
