@@ -2,20 +2,15 @@ package com.example.hashing.ConsistentHashing;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Collection;
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.util.*;
 
 public class ConsistentHash<T> {
-    private final SortedMap<Long, T> ring = new TreeMap<>();
-    private final int numberOfReplicas;
+    private final SortedMap<Long, T> circle = new TreeMap<>();
+    private final int defaultReplicas;
+    private final Map<T, Integer> nodeWeights = new HashMap<>();
 
-    public ConsistentHash(int numberOfReplicas, Collection<T> nodes) {
-        this.numberOfReplicas = numberOfReplicas;
-
-        for (T node : nodes) {
-            add(node);
-        }
+    public ConsistentHash(int defaultReplicas) {
+        this.defaultReplicas = defaultReplicas;
     }
 
     private long hash(String key) {
@@ -23,8 +18,6 @@ public class ConsistentHash<T> {
             MessageDigest md = MessageDigest.getInstance("MD5");
             md.update(key.getBytes());
             byte[] digest = md.digest();
-
-            // Convert first 4 bytes to long
             long h = 0;
             for (int i = 0; i < 4; i++) {
                 h <<= 8;
@@ -36,33 +29,41 @@ public class ConsistentHash<T> {
         }
     }
 
-    public void add(T node) {
-        for (int i = 0; i < numberOfReplicas; i++) {
-            ring.put(hash(node.toString() + i), node);
+    public void add(T node, int weight) {
+        nodeWeights.put(node, weight);
+        int replicas = weight * defaultReplicas;
+        for (int i = 0; i < replicas; i++) {
+            circle.put(hash(node.toString() + i), node);
         }
     }
 
     public void remove(T node) {
-        for (int i = 0; i < numberOfReplicas; i++) {
-            ring.remove(hash(node.toString() + i));
+        int weight = nodeWeights.getOrDefault(node, 1);
+        int replicas = weight * defaultReplicas;
+        for (int i = 0; i < replicas; i++) {
+            circle.remove(hash(node.toString() + i));
         }
+        nodeWeights.remove(node);
     }
 
     public T get(Object key) {
-        if (ring.isEmpty()) {
+        if (circle.isEmpty()) {
             return null;
         }
-
         long hash = hash(key.toString());
-
-        // If hash not in ring, find next higher hash
-        if (!ring.containsKey(hash)) {
-            SortedMap<Long, T> tailMap = ring.tailMap(hash);
-            hash = tailMap.isEmpty()
-                    ? ring.firstKey()
-                    : tailMap.firstKey();
+        if (!circle.containsKey(hash)) {
+            SortedMap<Long, T> tailMap = circle.tailMap(hash);
+            hash = tailMap.isEmpty() ? circle.firstKey() : tailMap.firstKey();
         }
+        return circle.get(hash);
+    }
 
-        return ring.get(hash);
+    public void updateWeight(T node, int newWeight) {
+        remove(node);
+        add(node, newWeight);
+    }
+
+    public Map<T, Integer> getNodeWeights() {
+        return new HashMap<>(nodeWeights);
     }
 }
